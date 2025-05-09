@@ -131,3 +131,23 @@ subject_planner_agent(): Designs pedagogical plan
 
 We used GPT-4o-mini as the backend model due to its support for low-latency and instruction-following behavior.
 
+## tradeoffs
+| **Decision**                | **Trade-off**                          | **Justification**                                                                 |
+|----------------------------|----------------------------------------|-----------------------------------------------------------------------------------|
+| Agent-based modularity     | Slight overhead due to message passing | Allows clean responsibility separation, easy scaling, and debugging              |
+| LLM-powered planning       | Cost of API calls                      | Rich domain-specific generation and adaptation                                   |
+| Structured JSON I/O        | Less flexible than freeform text       | Ensures safe plan parsing and validation                                         |
+| Fallbacks in Negotiation   | Might oversimplify student objections  | We preserve scaffolding by substituting rather than removing core activities     |
+
+
+## 4. Next Steps
+If we had more time, we would:
+- Expand content coverage: Add more subjects and granular topic breakdowns.
+- Incorporate retrieval-based grounding: Fetch relevant curriculum examples, not rely entirely on generation.
+- Log plan effectiveness: Track which activities result in improved mastery.
+- Stick to certain plans only
+- Add a UI: For students to interactively accept/decline or modify each activity.
+- Introduce memory: Track long-term learning patterns across sessions.
+
+
+
