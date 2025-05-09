@@ -1,6 +1,6 @@
-# mathgpt
 
-# Option B – Agentic Tutoring Flow Design
+
+# MathGPT Take home assignment: Agentic Tutoring Flow Design
 
 ## Executive Summary
 
@@ -8,7 +8,7 @@ We designed an agent-based personalized tutoring system that adapts dynamically 
 
 ---
 
-## 1. Key Assumptions
+## 1. Key Assumptions and Problem Formulation
 
 Modern educational tools often fail to personalize learning in a meaningful, adaptive way. Static content delivery does not address individual learner struggles, progress, or evolving goals.
 
@@ -19,10 +19,11 @@ Our goal was to build a multi-agent tutoring system that tailors instructional c
 - Feedback on the learning plan  
 
 **Key assumptions:**
-- Students have a structured knowledge graph per subject (e.g., Algebra → quadratic_equations).  
+- Each student has a structured knowledge graph per subject (e.g., Algebra → quadratic_equations).  
 - Each subject has a progress % (content covered) and mastery score (accuracy-based).  
-- Student intent can be inferred from queries (e.g., "I want to work more on Algebra").  
-- Plans can be negotiated using conversational feedback loops.  
+- Student intent can be inferred from queries (e.g., "I want to work more on Algebra").
+- The proposed plan will only have modules from content_access. Each module in content_access can have multiple activity types.
+- Student will only input a topic/subject which is part of the knowledge graph.   
 - The negotiations respect the defined pedagogy and scaffolded learning flow.  
 
 ---
@@ -37,7 +38,7 @@ We implemented a modular architecture with 2 cooperating agents:
 Classifies the student’s query and selects intent and a suitable subject using subject stats.
 
 > **Student input**:  
-> `What would you like to study today? > revise geometry`
+> `What would you like to study today (Algebra, Geometry, Calculus)? > revise geometry`
 
 > **Receptionist Output**:
 ```json
@@ -45,93 +46,97 @@ Classifies the student’s query and selects intent and a suitable subject using
   "intent": "review_request",
   "target_subject": "Geometry",
   "context": {
-    "progress": 90,
-    "mastery": 0.88
+    "progress": 85,
+    "mastery": 0.8
   }
 }
 ```
 
 ## (ii) Subject Planner Agent
 Creates a learning plan based on the student’s:
-- Mastery level,
-- Prior session history, and
-- Knowledge graph for the selected subject.
+
+- Output from the receptionist agent (which has: intent, target_subject, progress, mastery)
+- Prior session history
+- Knowledge graph for the selected subject (each knowledge graph has submodules and the level of mastery achieved in it).
+- Preference of certain activities
+- Only selects modules from content_access
 
 
 Sample Output:
 ```json
 {
-  "learning_objective": "Review and consolidate understanding of triangles and introduce circles in Geometry.",
-  "pedagogy": "Adaptive review through targeted quizzes and interactive learning.",
+  "learning_objective": "Review and reinforce understanding of triangles and familiarize with circles in geometry.",
+  "pedagogy": "Inquiry-based learning through interactive exploration and problem-solving activities.",
+  "target_subject": "Geometry",
   "activity_sequence": [
     {
-      "activity": "quiz",
-      "topic": "triangles",
-      "difficulty": "medium",
-      "time_limit": 10
+      "topic": "Geometry_Triangles",
+      "activity_type": "interactive_simulation",
+      "constraints": {
+        "time_limit": 10,
+        "session_duration": 30
+      }
     },
     {
-      "activity": "interactive_game",
-      "topic": "triangles"
+      "topic": "Geometry_Circles",
+      "activity_type": "interactive_simulation",
+      "constraints": {
+        "time_limit": 10,
+        "session_duration": 30
+      }
     },
     {
-      "activity": "quiz",
-      "topic": "circles",
-      "difficulty": "medium",
-      "time_limit": 10
-    },
-    {
-      "activity": "interactive_simulation",
-      "topic": "circles"
+      "topic": "Geometry_Triangles",
+      "activity_type": "quiz",
+      "constraints": {
+        "quiz_difficulty": "medium",
+        "time_limit": 10
+      }
     }
   ]
 }
 ```
 ## (iii) Negotiation Loop
- Handles student objections or requests and preserves pedagogical intent while modifying the plan. If a student wants to "skip the instructions," we might convert a video into notes but retain the concept. The negotiation is sent back to the subjectplanner agent and new plan is suggested. 
-Any feedback on this plan? (Leave blank to accept) > no interactive game
-🔁 Updated Plan after Negotiation:
+ Handles student objections or requests and preserves pedagogical intent while modifying the plan. If a student wants to "skip the instructions," we can convert a video into notes but retain the concept. The negotiation is sent back to the subjectplanner agent and new plan is suggested. 
+ 
+Sample output:
+`Any feedback on this plan? (Leave blank to accept) > no quiz`
+Updated Plan after Negotiation:
 ```json
 {
-  "learning_objective": "Review and consolidate understanding of triangles and introduce circles in Geometry.",
-  "pedagogy": "Adaptive review through targeted quizzes and interactive learning.",
+  "learning_objective": "Review and reinforce understanding of triangles and familiarize with circles in geometry.",
+  "pedagogy": "Inquiry-based learning through interactive exploration and problem-solving activities.",
   "activity_sequence": [
     {
-      "activity": "quiz",
-      "topic": "triangles",
-      "difficulty": "medium",
-      "time_limit": 10
-    },{
-      "activity": "group_discussion",
-      "topic": "triangles"
-    },{
-      "activity": "quiz",
-      "topic": "circles",
-      "difficulty": "medium",
-      "time_limit": 10
-    },{
-      "activity": "interactive_simulation",
-      "topic": "circles"
-    }  ] }
+      "topic": "Geometry_Triangles",
+      "activity_type": "interactive_simulation",
+      "constraints": {
+        "time_limit": 10,
+        "session_duration": 30
+      }
+    },
+    {
+      "topic": "Geometry_Circles",
+      "activity_type": "interactive_simulation",
+      "constraints": {
+        "time_limit": 10,
+        "session_duration": 30
+      }
+    },
+    {
+      "topic": "Geometry_Triangles",
+      "activity_type": "group_discussion",
+      "constraints": {
+        "duration": 10
+      }
+    }
+  ]
+}
 ```
 
-2.2 Data Flow and Protocol
-Student Query --> Receptionist --> Subject Planner --> Plan --> Student Feedback --> Negotiation Loop --> Updated Plan
+## Data Storage and tradeoffs
+The receptionist agent and subjectplanner agent interact via structured json messages. All the agents in this context is the GPT-4o-mini model. Below is the tradeoff table:
 
-All components interact via structured JSON messages.
-2.3 Code Overview
-call_openai(): Handles LLM interaction
-
-
-receptionist_agent(): Detects intent and recommends a subject
-
-
-subject_planner_agent(): Designs pedagogical plan
-
-
-We used GPT-4o-mini as the backend model due to its support for low-latency and instruction-following behavior.
-
-## tradeoffs
 | **Decision**                | **Trade-off**                          | **Justification**                                                                 |
 |----------------------------|----------------------------------------|-----------------------------------------------------------------------------------|
 | Agent-based modularity     | Slight overhead due to message passing | Allows clean responsibility separation, easy scaling, and debugging              |
@@ -141,13 +146,12 @@ We used GPT-4o-mini as the backend model due to its support for low-latency and 
 
 
 ## 4. Next Steps
-If we had more time, we would:
-- Expand content coverage: Add more subjects and granular topic breakdowns.
-- Incorporate retrieval-based grounding: Fetch relevant curriculum examples, not rely entirely on generation.
-- Log plan effectiveness: Track which activities result in improved mastery.
-- Stick to certain plans only
+If I had more time, I would:
+- Expand content coverage: Add more subjects and granular topic breakdowns. Also have one more component of different modules to integrate.
+- Incorporate retrieval-based grounding: Fetch relevant curriculum examples, not rely entirely on generation. This can also reduce hallucinations and have more factually-grounded outputs.
+- Log plan effectiveness: Track which activities result in improved mastery. Calculate this over a batch of students to have a better fine-grained analysis.
 - Add a UI: For students to interactively accept/decline or modify each activity.
-- Introduce memory: Track long-term learning patterns across sessions.
+- Introduce memory: Track long-term learning patterns across sessions. We can track student behaviour with this which can help us understand more about potential behaviour of a student.
 
 
 
