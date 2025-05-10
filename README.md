@@ -201,13 +201,18 @@ The receptionist agent and subjectplanner agent interact via structured json mes
 
 ## 3. Next Steps
 If I had more time, I would:
-- Expand content coverage: Add more subjects and granular topic breakdowns. Also have one more component of different modules to integrate.
-- Tackle issues with scaling: Tackle challenges that would occur while scaling it to multiple students.
-- Incorporate retrieval-based grounding: Fetch relevant curriculum examples, not rely entirely on generation. This can also reduce hallucinations and have more factually-grounded outputs.
-- Log plan effectiveness: Track which activities result in improved mastery. Calculate this over a batch of students to have a better fine-grained analysis.
-- Add a UI: For students to interactively accept/decline or modify each activity.
-- Introduce memory: Track long-term learning patterns across sessions. We can track student behaviour with this which can help us understand more about potential behaviour of a student.
+- **Expand subject coverage**  
+  Add more subjects and break down topics into finer units. This also includes integrating modular components to allow flexible curriculum design.
 
+- **Ground plans in real content**  
+  Instead of relying only on generated output, connect to a curriculum database to fetch examples and references. This helps reduce hallucination and keeps plans aligned with actual teaching material.
+
+- **Build a student-facing UI**  
+  Create an interface where students can view their plan, accept or modify activities, and give real-time feedback in a simple, engaging way.
+
+- **Add long-term memory**  
+  Store historical learning data and behavior patterns across sessions. This helps adapt future plans based on what the student struggles with or prefers over time.
+  
 **Notebook with sample code and system diagram are in this repository**
 
 *Note: Used LLMs to paraphrase the above content in a better way*
