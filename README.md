@@ -153,6 +153,7 @@ Sample Output:
  
 Sample output:
 `Any feedback on this plan? (Leave blank to accept) > no quiz`
+
 Updated Plan after Negotiation:
 ```json
 {
