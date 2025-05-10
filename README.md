@@ -189,12 +189,13 @@ Updated Plan after Negotiation:
 ## Data Storage and tradeoffs
 The receptionist agent and subjectplanner agent interact via structured json messages. All the agents in this context use the GPT-4o-mini model in the backend. Below is the tradeoff table:
 
-| **Decision**                | **Trade-off**                          | **Justification**                                                                 |
-|----------------------------|----------------------------------------|-----------------------------------------------------------------------------------|
-| Agent-based modularity     | Slight overhead due to message passing | Allows clean responsibility separation, easy scaling, and debugging              |
-| LLM-powered planning       | Cost of API calls                      | Rich domain-specific generation and adaptation                                   |
-| Structured JSON I/O        | Less flexible than freeform text       | Ensures safe plan parsing and validation                                         |
-| Fallbacks in Negotiation   | Might oversimplify student objections  | We preserve scaffolding by substituting rather than removing core activities     |
+
+| **Design Decision**               | **Trade-off**                                                             | **Justification**                                                                                  |
+|----------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| Stateless agents                 | Requires external state management (profile/context must be passed each time) | Simplifies agent deployment and horizontal scaling                                                  |
+| Constraint-based content filtering | May exclude helpful off-path material                                      | Honors curriculum scope, licensing, and ensures targeted content delivery                           |
+| Structured JSON protocol         | Reduces expressive flexibility                                             | Enforces reliable agent coordination, validation, and debugging                                     |
+| Time-limited activities          | May interrupt flow for slower learners                                     | Keeps sessions manageable and predictable for tutoring environments                                 |
 
 
 ## 4. Next Steps
@@ -207,4 +208,4 @@ If I had more time, I would:
 - Introduce memory: Track long-term learning patterns across sessions. We can track student behaviour with this which can help us understand more about potential behaviour of a student.
 
 
-
+*Used LLMs to paraphrase the above content in a better way*
