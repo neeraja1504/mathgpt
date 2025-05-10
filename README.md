@@ -4,7 +4,7 @@
 
 ## Executive Summary
 
-We designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity. The following is inspired from [this paper](https://arxiv.org/abs/2410.10650)
+Designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress, preference of student and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity. The following is inspired from [this paper](https://arxiv.org/abs/2410.10650)
 
 ---
 
@@ -12,10 +12,9 @@ We designed an agent-based personalized tutoring system that adapts dynamically 
 
 Modern educational tools often fail to personalize learning in a meaningful, adaptive way. Static content delivery does not address individual learner struggles, progress, or evolving goals.
 
-Our goal was to build a multi-agent tutoring system that tailors instructional content in real-time based on a student’s:
+The goal was to build a multi-agent tutoring system that tailors instructional content in real-time based on a student’s:
 - Prior performance  
-- Current mastery levels  
-- Self-declared interests  
+- Current mastery levels   
 - Feedback on the learning plan  
 
 **Key assumptions:**
@@ -85,10 +84,10 @@ profile = StudentProfile(
 
 ### 2.1 Architecture Overview
 
-We implemented a modular architecture with 2 cooperating agents:
+Implemented a modular architecture with 2 cooperating agents:
 
 #### (i) Receptionist Agent  
-Classifies the student’s query and selects intent and a suitable subject using subject stats.
+Classifies the student’s query and selects intent and a suitable subject using subject stats. The output is a dict which is shown below:
 
 > **Student input**:  
 > `What would you like to study today (Algebra, Geometry, Calculus)? > revise geometry`
@@ -188,7 +187,7 @@ Updated Plan after Negotiation:
 ```
 
 ## Data Storage and tradeoffs
-The receptionist agent and subjectplanner agent interact via structured json messages. All the agents in this context is the GPT-4o-mini model. Below is the tradeoff table:
+The receptionist agent and subjectplanner agent interact via structured json messages. All the agents in this context use the GPT-4o-mini model in the backend. Below is the tradeoff table:
 
 | **Decision**                | **Trade-off**                          | **Justification**                                                                 |
 |----------------------------|----------------------------------------|-----------------------------------------------------------------------------------|
