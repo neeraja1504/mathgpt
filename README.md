@@ -19,13 +19,66 @@ Our goal was to build a multi-agent tutoring system that tailors instructional c
 - Feedback on the learning plan  
 
 **Key assumptions:**
-- Each student has a structured knowledge graph per subject (e.g., Algebra → quadratic_equations).  
-- Each subject has a progress % (content covered) and mastery score (accuracy-based).  
+- Each student has a structured knowledge graph per subject (e.g., Algebra → quadratic_equations). This is stored in the form of a json (dict). 
+- Each subject has a progress % (content covered) and mastery score (accuracy-based). There is a content_access list of different subtopics in a subject. 
 - Student intent can be inferred from queries (e.g., "I want to work more on Algebra").
 - The proposed plan will only have modules from content_access. Each module in content_access can have multiple activity types.
 - Student will only input a topic/subject which is part of the knowledge graph.   
 - The negotiations respect the defined pedagogy and scaffolded learning flow.  
 
+A knowledge graph and content_access list looks for a student like this:
+```
+profile = StudentProfile(
+    name="Alice",
+    content_access=[
+        "Algebra_Basics", "Algebra_Quadratics", "Algebra_Polynomials",
+        "Geometry_Basics", "Geometry_Triangles", "Geometry_Circles",
+        "Calculus_Limits", "Calculus_Derivatives"
+    ],
+    subject_stats={
+        "Algebra": {"progress": 75, "mastery": 0.68},
+        "Geometry": {"progress": 85, "mastery": 0.80},
+        "Calculus": {"progress": 40, "mastery": 0.55}
+    },
+    knowledge_graph={
+        "Algebra": {
+            "linear_equations": {"status": "mastered", "last_seen": "2025-04-10"},
+            "quadratic_equations": {"status": "partial", "last_seen": "2025-04-25"},
+            "polynomials": {"status": "unseen", "last_seen": None}
+        },
+        "Geometry": {
+            "angles": {"status": "mastered", "last_seen": "2025-04-15"},
+            "triangles": {"status": "partial", "last_seen": "2025-04-22"},
+            "circles": {"status": "unseen", "last_seen": None}
+        },
+        "Calculus": {
+            "limits": {"status": "partial", "last_seen": "2025-04-28"},
+            "derivatives": {"status": "unseen", "last_seen": None},
+            "integrals": {"status": "unseen", "last_seen": None}
+        }
+    },
+    session_history=[
+        {"date": "2025-04-28", "activity": "quiz", "topic": "limits", "score": "0.5"},
+        {"date": "2025-04-27", "activity": "interactive_simulation", "topic": "limits"},
+        {"date": "2025-04-26", "activity": "video", "topic": "triangles", "watched": "True"},
+        {"date": "2025-04-25", "activity": "quiz", "topic": "quadratic_equations", "score": "0.6"},
+        {"date": "2025-04-24", "activity": "video", "topic": "quadratic_equations", "watched": "True"},
+        {"date": "2025-04-23", "activity": "group_discussion", "topic": "angles"},
+        {"date": "2025-04-20", "activity": "quiz", "topic": "linear_equations", "score": "0.85"}
+    ],
+    preference={
+        "video": False,
+        "interactive": True,
+        "quiz_difficulty": "medium",
+        "time_limit": 10,
+        "preferred_subject": "Algebra",
+        "max_session_duration": 30,  # minutes
+        "preferred_learning_style": "inquiry-based",
+        "avoid_activities": ["lecture_notes", "long videos"]
+    }
+)
+
+```
 ---
 
 ## 2. Proposed Approach
