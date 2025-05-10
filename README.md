@@ -201,6 +201,7 @@ The receptionist agent and subjectplanner agent interact via structured json mes
 ## 4. Next Steps
 If I had more time, I would:
 - Expand content coverage: Add more subjects and granular topic breakdowns. Also have one more component of different modules to integrate.
+- Tackle issues with scaling: Tackle challenges that would occur while scaling it to multiple students.
 - Incorporate retrieval-based grounding: Fetch relevant curriculum examples, not rely entirely on generation. This can also reduce hallucinations and have more factually-grounded outputs.
 - Log plan effectiveness: Track which activities result in improved mastery. Calculate this over a batch of students to have a better fine-grained analysis.
 - Add a UI: For students to interactively accept/decline or modify each activity.
