@@ -207,5 +207,6 @@ If I had more time, I would:
 - Add a UI: For students to interactively accept/decline or modify each activity.
 - Introduce memory: Track long-term learning patterns across sessions. We can track student behaviour with this which can help us understand more about potential behaviour of a student.
 
+**Notebook with sample code and system diagram are in this repository**
 
-*Used LLMs to paraphrase the above content in a better way*
+*Note: Used LLMs to paraphrase the above content in a better way*
