@@ -1,10 +1,10 @@
 
 
-# MathGPT Take home assignment: Agentic Tutoring Flow Design
+# MathGPT Take-home Assignment: Agentic Tutoring Flow Design
 
 ## Executive Summary
 
-Designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress, preference of student and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity. The following is inspired from [this paper](https://arxiv.org/abs/2410.10650)
+Designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress, preference of student and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity. The following is inspired from [this paper](https://arxiv.org/abs/2410.10650).
 
 ---
 
