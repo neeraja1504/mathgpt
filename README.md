@@ -4,7 +4,7 @@
 
 ## Executive Summary
 
-We designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity.
+We designed an agent-based personalized tutoring system that adapts dynamically to each student's learning needs. It uses a Receptionist Agent to identify the student’s intent, a Subject Planner Agent to craft individualized learning plans using prior progress and knowledge graphs, and a Negotiation Loop that adapts these plans based on feedback. This modular architecture supports adaptive learning flows while maintaining pedagogical integrity. The following is inspired from [this paper](https://arxiv.org/abs/2410.10650)
 
 ---
 
@@ -58,7 +58,7 @@ Creates a learning plan based on the student’s:
 - Output from the receptionist agent (which has: intent, target_subject, progress, mastery)
 - Prior session history
 - Knowledge graph for the selected subject (each knowledge graph has submodules and the level of mastery achieved in it).
-- Preference of certain activities
+- Preference for certain activities ([This](https://web.mit.edu/5.95/readings/bloom-two-sigma.pdf) paper suggests that having personal preferences in mind makes the student more productive)
 - Only selects modules from content_access
 
 
