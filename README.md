@@ -104,7 +104,7 @@ Classifies the student’s query and selects intent and a suitable subject using
 }
 ```
 
-## (ii) Subject Planner Agent
+#### (ii) Subject Planner Agent
 Creates a learning plan based on the student’s:
 
 - Output from the receptionist agent (which has: intent, target_subject, progress, mastery)
@@ -148,7 +148,7 @@ Sample Output:
   ]
 }
 ```
-## (iii) Negotiation Loop
+#### (iii) Negotiation Loop
  Handles student objections or requests and preserves pedagogical intent while modifying the plan. If a student wants to "skip the instructions," we can convert a video into notes but retain the concept. The negotiation is sent back to the subjectplanner agent and new plan is suggested. 
  
 Sample output:
@@ -187,7 +187,7 @@ Updated Plan after Negotiation:
 }
 ```
 
-## Data Storage and tradeoffs
+### 2.2 Data Storage and tradeoffs
 The receptionist agent and subjectplanner agent interact via structured json messages. All the agents in this context use the GPT-4o-mini model in the backend. Below is the tradeoff table:
 
 
@@ -199,7 +199,7 @@ The receptionist agent and subjectplanner agent interact via structured json mes
 | Time-limited activities          | May interrupt flow for slower learners                                     | Keeps sessions manageable and predictable for tutoring environments                                 |
 
 
-## 4. Next Steps
+## 3. Next Steps
 If I had more time, I would:
 - Expand content coverage: Add more subjects and granular topic breakdowns. Also have one more component of different modules to integrate.
 - Tackle issues with scaling: Tackle challenges that would occur while scaling it to multiple students.
